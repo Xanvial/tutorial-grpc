@@ -6,6 +6,8 @@ import (
 
 	tutorialproto "github.com/Xanvial/tutorial-grpc/example/proto"
 	"github.com/Xanvial/tutorial-grpc/example/server/hello"
+	"github.com/Xanvial/tutorial-grpc/example/server/interceptor"
+	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 )
 
@@ -15,9 +17,17 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
-
 	s := hello.Server{}
+	grpcInterceptor := interceptor.NewGRPCInterceptor()
+
+	// grpc unary interceptors, will be executed from first element to the last
+	unaryInterceptors := []grpc.UnaryServerInterceptor{
+		grpcInterceptor.LoggingInterceptor(),
+	}
+
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(grpcMiddleware.ChainUnaryServer(unaryInterceptors...)),
+	)
 
 	tutorialproto.RegisterChatServiceServer(grpcServer, &s)
 
