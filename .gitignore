@@ -12,6 +12,8 @@
 *.out
 
 # Binaries
+app-client
+app-server
 example/example-client
 example/example-server
 
