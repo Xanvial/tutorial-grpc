@@ -11,3 +11,6 @@ run-client: build-client
 
 run-server: build-server
 	@./example-server
+
+gen-proto:
+	@protoc proto/hello.proto --go_out=plugins=grpc:proto -I proto
