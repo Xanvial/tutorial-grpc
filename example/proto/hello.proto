@@ -1,5 +1,6 @@
 syntax = "proto3";
 package tutorialproto;
+option go_package = "github.com/Xanvial/tutorial-grpc/example/proto;tutorialproto";
 
 message MessageReq {
   string body = 1;

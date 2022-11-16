@@ -1,2 +1,3 @@
 syntax = "proto3";
 package appproto;
+option go_package = "github.com/Xanvial/tutorial-grpc/proto;appproto";

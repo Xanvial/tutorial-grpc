@@ -8,6 +8,9 @@ import (
 )
 
 type Server struct {
+	// this will allow forward compatibility
+	// but new function will always return error unless implemented in code
+	tutorialproto.UnimplementedChatServiceServer
 }
 
 func (s *Server) TestHello(ctx context.Context, in *tutorialproto.MessageReq) (*tutorialproto.MessageResp, error) {

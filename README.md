@@ -6,6 +6,15 @@ download all necessary dependency with
 go mod vendor
 ```
 
+To generate the proto file, use 
+```
+make gen-proto
+```
+or
+```
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=paths=source_relative:. proto/*.proto
+```
+
 On the root directory, run this command for server:
 ```
 make run-server
@@ -13,6 +22,12 @@ make run-server
 on other terminal, run client with:
 ```
 make run-client
+```
+
+If `make` is not installed, the application can be run using these command:
+```
+go run server/main.go
+go run client/main.go
 ```
 
 ## Directory structure
