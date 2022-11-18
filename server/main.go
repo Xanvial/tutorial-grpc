@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/Xanvial/tutorial-grpc/server/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -13,6 +14,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	// use this product class Usecase as param for grpc handler
+	var productData usecase.ProductClass = usecase.NewProductUsecase()
+	log.Println("productData:", productData) // just to avoid warning
 
 	// put grpc class initialization and interceptor here
 	// ...
