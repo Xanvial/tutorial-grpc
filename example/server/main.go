@@ -9,6 +9,7 @@ import (
 	"github.com/Xanvial/tutorial-grpc/example/server/interceptor"
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -30,6 +31,9 @@ func main() {
 	)
 
 	tutorialproto.RegisterChatServiceServer(grpcServer, &s)
+
+	// register server using reflection
+	reflection.Register(grpcServer)
 
 	log.Println("start listening on port: 8999")
 	if err := grpcServer.Serve(lis); err != nil {

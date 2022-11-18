@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -17,6 +18,9 @@ func main() {
 	// ...
 
 	grpcServer := grpc.NewServer()
+
+	// register server using reflection
+	reflection.Register(grpcServer)
 
 	log.Println("start listening on port: 9000")
 	if err := grpcServer.Serve(lis); err != nil {
