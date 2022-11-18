@@ -1,3 +1,40 @@
 syntax = "proto3";
 package appproto;
 option go_package = "github.com/Xanvial/tutorial-grpc/proto;appproto";
+
+message Product {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message AddProductReq {
+    Product product = 1;
+}
+
+message AddProductResp {
+    bool success = 1;
+    string error = 2;
+}
+
+message GetProductsReq {
+    // no need to have any data for now
+}
+
+message GetProductsResp {
+    repeated Product products = 1;
+}
+
+message GetProductReq {
+    int64 id = 1;
+}
+
+message GetProductResp {
+    Product product = 1;
+}
+
+service ProductService {
+    rpc AddProduct(AddProductReq) returns (AddProductResp) {}
+    rpc GetProducts(GetProductsReq) returns (GetProductsResp) {}
+    rpc GetProduct(GetProductReq) returns (GetProductResp) {}
+}

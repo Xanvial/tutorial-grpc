@@ -30,19 +30,6 @@ func (pu *ProductUsecase) AddProduct(product model.Product) error {
 	return nil
 }
 
-// UpdateProduct will update existing product data
-func (pu *ProductUsecase) UpdateProduct(product model.Product) error {
-	// check existence
-	_, ok := pu.products[product.ID]
-	if !ok {
-		// product haven't yet added, return error because it's supposed to use `AddProduct` for new data
-		return errors.New("product id not exist")
-	}
-
-	pu.products[product.ID] = product
-	return nil
-}
-
 // GetProducts will return list of product as specified
 func (pu *ProductUsecase) GetProducts() []model.Product {
 	// need to convert data from map to slice

@@ -27,7 +27,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(grpcMiddleware.ChainUnaryServer(unaryInterceptors...)),
+		grpcMiddleware.WithUnaryServerChain(unaryInterceptors...),
 	)
 
 	tutorialproto.RegisterChatServiceServer(grpcServer, &s)
