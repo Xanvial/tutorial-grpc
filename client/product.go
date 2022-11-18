@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"log"
+	"strconv"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -24,7 +25,7 @@ func NewProductClient(
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	log.Println("conn:", conn) // just to avoid warning
+	log.Println("conn:", conn) // just to avoid warning, remove this after other codes implemented
 
 	return ProductClient{
 		scanner: *bufio.NewScanner(reader),
@@ -35,11 +36,13 @@ func NewProductClient(
 func (pc *ProductClient) MainLoop() {
 
 	for {
+		log.Println("---------------------")
 		log.Println("Simple Client Command")
 		log.Println("---------------------")
 		log.Println("1) Add Product")
 		log.Println("2) Get All Product")
 		log.Println("3) Get Product by Id")
+		log.Println("0) Exit")
 		log.Print("->: ")
 		// Scans a line from Stdin(Console)
 		pc.scanner.Scan()
@@ -53,8 +56,10 @@ func (pc *ProductClient) MainLoop() {
 			pc.HandleGetProducts()
 		case "3":
 			pc.HandleGetProduct()
+		case "0":
+			return
 		}
-		log.Println("---------------------")
+		log.Println("")
 	}
 }
 
@@ -67,6 +72,7 @@ func (pc *ProductClient) HandleAddProduct() {
 	productID, err := strconv.Atoi(productIDStr)
 	if err != nil {
 		log.Println("id should be integer, err:", err)
+		return
 	}
 	log.Println("name:")
 	pc.scanner.Scan()
@@ -76,7 +82,7 @@ func (pc *ProductClient) HandleAddProduct() {
 	productDesc := pc.scanner.Text()
 
 	// Send this data to grpc server
-	log.Println("inputted data product. id:", productID, ", name:", productName, ", desc:", productDesc)
+	log.Println("add product with id:", productID, ", name:", productName, ", desc:", productDesc)
 }
 
 func (pc *ProductClient) HandleGetProducts() {
@@ -92,9 +98,10 @@ func (pc *ProductClient) HandleGetProduct() {
 	productID, err := strconv.Atoi(productIDStr)
 	if err != nil {
 		log.Println("id should be integer, err:", err)
+		return
 	}
 	// Send this data to grpc server
-	log.Println("inputted data product. id:", productID)
+	log.Println("request product id:", productID)
 
 	// also print the response
 }

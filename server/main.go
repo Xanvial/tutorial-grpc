@@ -21,6 +21,7 @@ func main() {
 
 	// put grpc class initialization and interceptor here
 	productHandler := handler.NewProductHandler(productData)
+	log.Println("productHandler:", productHandler) // just to avoid compile error, remove this after implementing other codes
 
 	grpcServer := grpc.NewServer()
 
