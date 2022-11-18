@@ -2,35 +2,41 @@ package product
 
 import (
 	"bufio"
+	"context"
 	"io"
 	"log"
 	"strconv"
 	"strings"
 
+	"github.com/Xanvial/tutorial-grpc/client/interceptor"
+	appproto "github.com/Xanvial/tutorial-grpc/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 type ProductClient struct {
 	scanner bufio.Scanner
-	// client appproto.ProductServiceClient // client implementation of grpc proto, update the name accordingly
+	client  appproto.ProductServiceClient // client implementation of grpc proto, update the name accordingly
 }
 
 func NewProductClient(
 	reader io.Reader,
-	// preferably add interceptor class as param here, but can also be added directly
+	interceptor *interceptor.GRPCInterceptor,
 ) ProductClient {
 	// initialize grpc and add interceptor here
 	conn, err := grpc.Dial(":9000",
+		grpc.WithChainUnaryInterceptor(interceptor.MetadataInterceptor(), interceptor.LoggingInterceptor()),
 		grpc.WithTransportCredentials(insecure.NewCredentials())) // to allow insecure connection
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	log.Println("conn:", conn) // just to avoid warning, remove this after other codes implemented
+
+	c := appproto.NewProductServiceClient(conn)
 
 	return ProductClient{
 		scanner: *bufio.NewScanner(reader),
 		// also save proto client to be used later
+		client: c,
 	}
 }
 
@@ -84,10 +90,30 @@ func (pc *ProductClient) HandleAddProduct() {
 
 	// Send this data to grpc server
 	log.Println("add product with id:", productID, ", name:", productName, ", desc:", productDesc)
+	resp, err := pc.client.AddProduct(context.Background(), &appproto.AddProductReq{
+		Product: &appproto.Product{
+			Id:          int64(productID),
+			Name:        productName,
+			Description: productDesc,
+		},
+	})
+	if err != nil {
+		log.Println("error on calling add products, err:", err)
+		return
+	}
+
+	log.Println("response:", resp)
 }
 
 func (pc *ProductClient) HandleGetProducts() {
 	// hit grpc server and print all response
+	resp, err := pc.client.GetProducts(context.Background(), &appproto.GetProductsReq{})
+	if err != nil {
+		log.Println("error on calling get product, err:", err)
+		return
+	}
+
+	log.Println("response:", resp)
 }
 
 func (pc *ProductClient) HandleGetProduct() {
@@ -105,4 +131,14 @@ func (pc *ProductClient) HandleGetProduct() {
 	log.Println("request product id:", productID)
 
 	// also print the response
+	// hit grpc server and print all response
+	resp, err := pc.client.GetProduct(context.Background(), &appproto.GetProductReq{
+		Id: int64(productID),
+	})
+	if err != nil {
+		log.Println("error on calling get product, err:", err)
+		return
+	}
+
+	log.Println("response:", resp)
 }
