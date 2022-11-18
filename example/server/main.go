@@ -7,7 +7,6 @@ import (
 	tutorialproto "github.com/Xanvial/tutorial-grpc/example/proto"
 	"github.com/Xanvial/tutorial-grpc/example/server/hello"
 	"github.com/Xanvial/tutorial-grpc/example/server/interceptor"
-	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -27,7 +26,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer(
-		grpcMiddleware.WithUnaryServerChain(unaryInterceptors...),
+		grpc.ChainUnaryInterceptor(unaryInterceptors...),
 	)
 
 	tutorialproto.RegisterChatServiceServer(grpcServer, &s)

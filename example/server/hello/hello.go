@@ -14,6 +14,6 @@ type Server struct {
 }
 
 func (s *Server) TestHello(ctx context.Context, in *tutorialproto.MessageReq) (*tutorialproto.MessageResp, error) {
-	log.Printf("Receive message: %s", in.Body)
+	log.Printf("Receive message: %s", in.GetBody())
 	return &tutorialproto.MessageResp{Body: "Hello From the Server!"}, nil
 }

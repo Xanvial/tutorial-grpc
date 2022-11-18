@@ -25,6 +25,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	log.Printf("Response from server: %s", response.Body)
+	log.Printf("Response from server: %s", response.GetBody())
 
 }
