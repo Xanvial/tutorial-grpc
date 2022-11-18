@@ -63,7 +63,11 @@ func (pc *ProductClient) HandleAddProduct() {
 	log.Println("---------------------")
 	log.Println("id:")
 	pc.scanner.Scan()
-	productID := pc.scanner.Text()
+	productIDStr := pc.scanner.Text()
+	productID, err := strconv.Atoi(productIDStr)
+	if err != nil {
+		log.Println("id should be integer, err:", err)
+	}
 	log.Println("name:")
 	pc.scanner.Scan()
 	productName := pc.scanner.Text()
@@ -84,7 +88,11 @@ func (pc *ProductClient) HandleGetProduct() {
 	log.Println("---------------------")
 	log.Println("id:")
 	pc.scanner.Scan()
-	productID := pc.scanner.Text()
+	productIDStr := pc.scanner.Text()
+	productID, err := strconv.Atoi(productIDStr)
+	if err != nil {
+		log.Println("id should be integer, err:", err)
+	}
 	// Send this data to grpc server
 	log.Println("inputted data product. id:", productID)
 

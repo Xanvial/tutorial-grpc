@@ -1,8 +1,8 @@
 build-client:
-	@go build -v -o app-client client/main.go
+	@go build -v -o app-client client/*.go
 
 build-server:
-	@go build -v -o app-server server/main.go
+	@go build -v -o app-server server/*.go
 
 run-client: build-client
 	@./app-client

@@ -14,7 +14,6 @@ message AddProductReq {
 
 message AddProductResp {
     bool success = 1;
-    string error = 2;
 }
 
 message GetProductsReq {
