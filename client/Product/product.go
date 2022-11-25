@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"strconv"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -47,7 +48,7 @@ func (pc *ProductClient) MainLoop() {
 		// Scans a line from Stdin(Console)
 		pc.scanner.Scan()
 		// Holds the string that scanned
-		text := pc.scanner.Text()
+		text := strings.TrimSpace(pc.scanner.Text())
 
 		switch text {
 		case "1":
@@ -68,7 +69,7 @@ func (pc *ProductClient) HandleAddProduct() {
 	log.Println("---------------------")
 	log.Println("id:")
 	pc.scanner.Scan()
-	productIDStr := pc.scanner.Text()
+	productIDStr := strings.TrimSpace(pc.scanner.Text())
 	productID, err := strconv.Atoi(productIDStr)
 	if err != nil {
 		log.Println("id should be integer, err:", err)
@@ -76,10 +77,10 @@ func (pc *ProductClient) HandleAddProduct() {
 	}
 	log.Println("name:")
 	pc.scanner.Scan()
-	productName := pc.scanner.Text()
+	productName := strings.TrimSpace(pc.scanner.Text())
 	log.Println("description:")
 	pc.scanner.Scan()
-	productDesc := pc.scanner.Text()
+	productDesc := strings.TrimSpace(pc.scanner.Text())
 
 	// Send this data to grpc server
 	log.Println("add product with id:", productID, ", name:", productName, ", desc:", productDesc)
@@ -94,7 +95,7 @@ func (pc *ProductClient) HandleGetProduct() {
 	log.Println("---------------------")
 	log.Println("id:")
 	pc.scanner.Scan()
-	productIDStr := pc.scanner.Text()
+	productIDStr := strings.TrimSpace(pc.scanner.Text())
 	productID, err := strconv.Atoi(productIDStr)
 	if err != nil {
 		log.Println("id should be integer, err:", err)
