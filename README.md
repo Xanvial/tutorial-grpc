@@ -26,8 +26,8 @@ make run-client
 
 If `make` is not installed, the application can be run using these command:
 ```
-go run server/*.go
-go run client/*.go
+go run server/main.go
+go run client/main.go
 ```
 
 ## Directory structure
